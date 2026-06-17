@@ -1,37 +1,145 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-<title>Create Attendance</title>
+<title>Attendance Management</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0f172a;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    width:500px;
+    background:#1e293b;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 0 25px rgba(0,0,0,0.3);
+}
+
+h1{
+    color:white;
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    color:#cbd5e1;
+    margin-bottom:8px;
+}
+
+input,
+select{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#334155;
+    color:white;
+    font-size:15px;
+}
+
+.btn-submit{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#3b82f6;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.btn-submit:hover{
+    background:#2563eb;
+}
+
+.view-btn{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#60a5fa;
+    text-decoration:none;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h1>Create Attendance</h1>
+<div class="container">
 
-<form action="/attendance/create"
-method="post">
+<h1>Mark Attendance</h1>
 
-<input type="text"
-name="student_id"
-placeholder="Student ID">
+<form action="/attendance/create" method="post">
 
-<br><br>
+    <div class="form-group">
+        <label>Student ID</label>
+        <input
+            type="number"
+            name="student_id"
+            placeholder="Enter Student ID"
+            required>
+    </div>
 
-<input type="text"
-name="date"
-placeholder="Date">
+    <div class="form-group">
+        <label>Date</label>
+        <input
+            type="date"
+            name="date"
+            required>
+    </div>
 
-<br><br>
+    <div class="form-group">
+        <label>Status</label>
 
-<input type="text"
-name="status"
-placeholder="Status">
+        <select name="status">
 
+            <option value="Present">
+                Present
+            </option>
 
-<button>
-Create
-</button>
+            <option value="Absent">
+                Absent
+            </option>
+
+            <option value="Late">
+                Late
+            </option>
+
+        </select>
+    </div>
+
+    <button class="btn-submit">
+        Save Attendance
+    </button>
 
 </form>
 
+<a href="/attendance/view" class="view-btn">
+    View Attendance Records
+</a>
+
+</div>
+
 </body>
 </html>
+```
