@@ -1,48 +1,146 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-<title>Create Assessment</title>
+    <title>Create Assessment</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            background:#0f172a;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .container{
+            width:450px;
+            background:#1e293b;
+            padding:40px;
+            border-radius:20px;
+            box-shadow:0px 0px 20px rgba(0,0,0,0.3);
+        }
+
+        h1{
+            color:white;
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .form-group{
+            margin-bottom:20px;
+        }
+
+        label{
+            display:block;
+            color:#cbd5e1;
+            margin-bottom:8px;
+        }
+
+        input{
+            width:100%;
+            padding:15px;
+            border:none;
+            border-radius:10px;
+            background:#334155;
+            color:white;
+            outline:none;
+            font-size:15px;
+        }
+
+        input::placeholder{
+            color:#94a3b8;
+        }
+
+        .btn-create{
+            width:100%;
+            padding:15px;
+            background:#3b82f6;
+            color:white;
+            border:none;
+            border-radius:10px;
+            font-size:16px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .btn-create:hover{
+            background:#2563eb;
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-<h1>Create Assessment</h1>
+<div class="container">
 
-<form action="/assessment/create"
-method="post">
+    <h1>Create Assessment</h1>
 
-<input type="text"
-name="title"
-placeholder="Title">
+    <form action="/assessment/create" method="post">
 
-<br><br>
+        <div class="form-group">
+            <label>Assessment Title</label>
+            <input
+                type="text"
+                name="title"
+                placeholder="Enter assessment title"
+                required>
+        </div>
 
-<input type="text"
-name="subject"
-placeholder="Subject">
+        <div class="form-group">
+            <label>Subject</label>
+            <input
+                type="text"
+                name="subject"
+                placeholder="Enter subject name"
+                required>
+        </div>
 
-<br><br>
+        <div class="form-group">
+            <label>Total Marks</label>
+            <input
+                type="number"
+                name="total_marks"
+                placeholder="100"
+                required>
+        </div>
 
-<input type="number"
-name="total_marks">
+        <div class="form-group">
+            <label>Obtained Marks</label>
+            <input
+                type="number"
+                name="obtained_marks"
+                placeholder="85"
+                required>
+        </div>
 
-<br><br>
+        <div class="form-group">
+            <label>Student ID</label>
+            <input
+                type="number"
+                name="student_id"
+                placeholder="Enter student ID"
+                required>
+        </div>
 
-<input type="number"
-name="obtained_marks">
+        <button class="btn-create">
+            Create Assessment
+        </button>
 
-<br><br>
+    </form>
 
-<input type="number"
-name="student_id"
-placeholder="Student ID">
-
-<br><br>
-
-<button>
-Create
-</button>
-
-</form>
+</div>
 
 </body>
 </html>
+```
