@@ -78,12 +78,12 @@ class Assessment(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     title: Mapped[str] = mapped_column(String(100))
+
     subject: Mapped[str] = mapped_column(String(100))
 
     total_marks: Mapped[int]
-    obtained_marks: Mapped[int]
 
-    student_id: Mapped[int]
+    obtained_marks: Mapped[int]
 
 class Attendance(Base):
     __tablename__ = "attendance"
@@ -374,13 +374,18 @@ def create_attendance(
     return RedirectResponse("/trainer", status_code=303)
 
 #Assessment CRUD
+@app.get("/assessment/create")
+def create_assessment_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="create_assessment.html"
+    )
 @app.post("/assessment/create")
 def create_assessment(
         title: str = Form(...),
         subject: str = Form(...),
         total_marks: int = Form(...),
         obtained_marks: int = Form(...),
-        student_id: int = Form(...),
         db: Session = Depends(get_db)
 ):
 
@@ -389,34 +394,87 @@ def create_assessment(
         subject=subject,
         total_marks=total_marks,
         obtained_marks=obtained_marks,
-        student_id=student_id
     )
 
     db.add(assessment)
     db.commit()
 
-    return RedirectResponse("/trainer", status_code=303)
+    return RedirectResponse(
+        url="/student/assessments",
+        status_code=303
+    )
 
 
 # =====================
 # STUDENT PAGES
 # =====================
 
-@app.get("/student/assessments", response_class=HTMLResponse)
-def assessment_page(
-    request: Request,
-    current_user: User = Depends(get_current_user)
+@app.get("/student/assessments")
+def assessments_page(
+        request: Request,
+        db: Session = Depends(get_db)
 ):
-    if not current_user:
-        return RedirectResponse(url="/login", status_code=303)
+
+    assessments = db.query(Assessment).all()
 
     return templates.TemplateResponse(
         request=request,
         name="assessment.html",
-        context={"current_user": current_user}
+        context={
+            "request": request,
+            "assessments": assessments
+        }
     )
 
+@app.post("/assessment/update/{assessment_id}")
+def update_assessment(
+    assessment_id: int,
+    title: str = Form(...),
+    subject: str = Form(...),
+    total_marks: int = Form(...),
+    obtained_marks: int = Form(...),
+    db: Session = Depends(get_db)
+):
 
+    assessment = db.query(Assessment).filter(
+        Assessment.id == assessment_id
+    ).first()
+
+    if assessment:
+
+        assessment.title = title
+        assessment.subject = subject
+        assessment.total_marks = total_marks
+        assessment.obtained_marks = obtained_marks
+
+        db.commit()
+        db.refresh(assessment)
+
+    return RedirectResponse(
+        url="/student/assessments",
+        status_code=303
+    )
+
+@app.get("/assessment/delete/{assessment_id}")
+def delete_assessment(
+    assessment_id: int,
+    db: Session = Depends(get_db)
+):
+
+    assessment = db.query(Assessment).filter(
+        Assessment.id == assessment_id
+    ).first()
+
+    if assessment:
+        db.delete(assessment)
+        db.commit()
+
+    return RedirectResponse(
+        url="/student/assessments",
+        status_code=303
+    )
+
+#Student Attendance Page
 @app.get("/student/attendance", response_class=HTMLResponse)
 def attendance_page(
     request: Request,

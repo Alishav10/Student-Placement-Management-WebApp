@@ -1,8 +1,9 @@
-```html
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Assessment</title>
+
+
+    <title>Assessments</title>
 
     <style>
 
@@ -15,14 +16,14 @@
 
         body{
             background:#0f172a;
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
+            color:white;
+
+            padding:40px;
         }
 
         .container{
-            width:450px;
+            width:500px;
+            margin:auto;
             background:#1e293b;
             padding:40px;
             border-radius:20px;
@@ -30,7 +31,6 @@
         }
 
         h1{
-            color:white;
             text-align:center;
             margin-bottom:30px;
         }
@@ -63,10 +63,10 @@
         .btn-create{
             width:100%;
             padding:15px;
-            background:#3b82f6;
-            color:white;
             border:none;
             border-radius:10px;
+            background:#3b82f6;
+            color:white;
             font-size:16px;
             cursor:pointer;
             transition:0.3s;
@@ -74,6 +74,53 @@
 
         .btn-create:hover{
             background:#2563eb;
+        }
+
+        .assessment-table{
+            width:100%;
+            margin-top:50px;
+            border-collapse:collapse;
+        }
+
+        .assessment-table th{
+            background:#3b82f6;
+            padding:15px;
+        }
+
+        .assessment-table td{
+            background:#1e293b;
+            padding:15px;
+            border-bottom:1px solid #334155;
+        }
+
+        .assessment-table input{
+            padding:10px;
+        }
+
+        .update-btn{
+            background:#22c55e;
+            color:white;
+            border:none;
+            padding:10px 15px;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+        .update-btn:hover{
+            background:#16a34a;
+        }
+
+        .delete-btn{
+            background:#dc2626;
+            color:white;
+            padding:10px 15px;
+            border-radius:8px;
+            text-decoration:none;
+            margin-left:10px;
+        }
+
+        .delete-btn:hover{
+            background:#b91c1c;
         }
 
     </style>
@@ -102,7 +149,7 @@
             <input
                 type="text"
                 name="subject"
-                placeholder="Enter subject name"
+                placeholder="Enter subject"
                 required>
         </div>
 
@@ -125,15 +172,14 @@
         </div>
 
         <div class="form-group">
-            <label>Student ID</label>
+            <label>Submission Date</label>
             <input
-                type="number"
-                name="student_id"
-                placeholder="Enter student ID"
+                type="date"
+                name="date"
                 required>
         </div>
 
-        <button class="btn-create">
+        <button type="submit" class="btn-create">
             Create Assessment
         </button>
 
@@ -141,6 +187,77 @@
 
 </div>
 
+
+<table class="assessment-table">
+
+    <tr>
+        <th>Title</th>
+        <th>Subject</th>
+        <th>Total Marks</th>
+        <th>Obtained Marks</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for assessment in assessments %}
+
+    <tr>
+
+        <form action="/assessment/update/{{ assessment.id }}"
+              method="post">
+
+            <td>
+                <input
+                    type="text"
+                    name="title"
+                    value="{{ assessment.title }}">
+            </td>
+
+            <td>
+                <input
+                    type="text"
+                    name="subject"
+                    value="{{ assessment.subject }}">
+            </td>
+
+            <td>
+                <input
+                    type="number"
+                    name="total_marks"
+                    value="{{ assessment.total_marks }}">
+            </td>
+
+            <td>
+                <input
+                    type="number"
+                    name="obtained_marks"
+                    value="{{ assessment.obtained_marks }}">
+            </td>
+
+            <td>
+
+                <button
+                    type="submit"
+                    class="update-btn">
+                    Update
+                </button>
+
+                <a
+                    href="/assessment/delete/{{ assessment.id }}"
+                    class="delete-btn">
+                    Delete
+                </a>
+
+            </td>
+
+        </form>
+
+    </tr>
+
+    {% endfor %}
+
+
+</table>
+
 </body>
+
 </html>
-```
